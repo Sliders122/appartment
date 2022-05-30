@@ -145,4 +145,3 @@ wsproto==1.1.0
 yapf @ file:///tmp/build/80754af9/yapf_1615749224965/work
 zipp @ file:///C:/ci/zipp_1652274072582/work
 
-chromium-chromedriver
