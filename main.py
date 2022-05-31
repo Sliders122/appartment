@@ -1,3 +1,4 @@
+import matplotlib.pyplot
 from selenium.webdriver import Firefox
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
@@ -101,16 +102,24 @@ def image_to_text(crop):
     text_from_crop = pytesseract.image_to_string(crop)
     return text_from_crop
 
+
+
 if __name__ == '__main__':
     #print(pyautogui.size())
-    # crop_address = extract_zillow_address()
-    crop_address = get_screenshot()
-    print(type(crop_address))
+    crop_address = extract_zillow_address()
+    crop_address = get_screenshot() # this un numpy array
 
+    matplotlib.pyplot.imsave("price_image.png", crop_address) # transform the prvious numpy array to an image and save it
+    print(type(crop_address))
     # Plot the crop
     plt.imshow(crop_address)
     plt.title("the address as image")
     plt.show()
-
     text_from_crop = image_to_text(crop_address)
+
     print("outupt:" + text_from_crop)
+
+
+   # cv2.imwrite("Capture d’écran 2022-05-31 144157.png", )
+    #grayImage = cv2.cvtColor(originalImage, cv2.COLOR_BGR2GRAY)
+    #print(grayImage)
