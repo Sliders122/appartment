@@ -12,6 +12,7 @@ import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = "C:\\Users\Quentin\AppData\Local\Programs\Tesseract-OCR\\tesseract.exe"
 #C:\Users\Quentin\AppData\Local\Programs\Tesseract-OCR
+
 opts = Options()
 opts.headless = False
 # assert opts.headless  # Operating in headless mode
@@ -108,7 +109,6 @@ if __name__ == '__main__':
     #print(pyautogui.size())
     crop_address = extract_zillow_address()
     crop_address = get_screenshot() # this un numpy array
-
     matplotlib.pyplot.imsave("price_image.png", crop_address) # transform the prvious numpy array to an image and save it
     print(type(crop_address))
     # Plot the crop
@@ -120,6 +120,3 @@ if __name__ == '__main__':
     print("outupt:" + text_from_crop)
 
 
-   # cv2.imwrite("Capture d’écran 2022-05-31 144157.png", )
-    #grayImage = cv2.cvtColor(originalImage, cv2.COLOR_BGR2GRAY)
-    #print(grayImage)
