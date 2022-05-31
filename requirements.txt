@@ -145,3 +145,10 @@ wsproto==1.1.0
 yapf @ file:///tmp/build/80754af9/yapf_1615749224965/work
 zipp @ file:///C:/ci/zipp_1652274072582/work
 
+
+
+
+pyautogui~=0.9.53
+numpy~=1.21.5
+opencv-python~=4.5.5.64
+matplotlib~=3.5.1
