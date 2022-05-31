@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 import time
 import pytesseract
 
-
+pytesseract.pytesseract.tesseract_cmd = "C:\\Users\Quentin\AppData\Local\Programs\Tesseract-OCR\\tesseract.exe"
+#C:\Users\Quentin\AppData\Local\Programs\Tesseract-OCR
 opts = Options()
 opts.headless = False
 # assert opts.headless  # Operating in headless mode
@@ -45,36 +46,29 @@ def get_screenshot():
 
     # Get the starting point from the mouse position
     # x_y = pyautogui.position()
-
-    res = input('Are you ready with the mouse position for the top-left corner? Y/N')
-
     tlx = 0
     tly = 0
     rbx = 0
     rby = 0
 
-    if res.upper() == 'Y':
-        # Get the starting point from the mouse position
-        tlx, tly = pyautogui.position()
-        print(tlx)
-        print(tly)
+    # We wait for any the user input to put his mouse on the wanted spot
+    # Get the starting point from the mouse position
+    input('Input something when you are ready for the top left corner\n')
+    tlx, tly = pyautogui.position()
+    print(tlx)
+    print(tly)
+    # Get the starting point from the mouse position
+    input('Input something when you are ready for the bottom right corner\n')
+    rbx, rby = pyautogui.position()
+    print(rbx)
+    print(rby)
 
-    res = input('Are you ready with the mouse position for the bottom-right corner? Y/N')
+    return extract_crop(tlx = tlx, tly = tly, rbx = rbx, rby = rby)
 
-    if res.upper() == 'Y':
-        # Get the starting point from the mouse position
-        rbx, rby = pyautogui.position()
-        print(rbx)
-        print(rby)
-
-    image = pyautogui.screenshot()
-    image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-    return image[tly:rby, tlx:rbx, :3]  # image[ymin:ymax,xmin:xmax]
-
-
-def extract_address(tlx=1133, tly=297, rbx=1627, rby=340):
-    """Extract the address from the Zillow website based on the user screen size
-
+def extract_zillow_address():
+    """
+    Extract the address from the Zillow website
+    based on the user screen size
     :return:
     """
     assert pyautogui.size() == (1920, 1080)
@@ -85,23 +79,38 @@ def extract_address(tlx=1133, tly=297, rbx=1627, rby=340):
 
 
 def extract_crop(tlx, tly, rbx, rby):
-    """Extract a crop
-
-    :param tlx:int x top left position
-    :param tly:int y top left position
-    :param rbx:int x top right position
-    :param rby:int y top right position
-    :return:
+    """
+    Extract a crop
+    :param tlx: int x top left position
+    :param tly: int y top left position
+    :param rbx: int x bottom right position
+    :param rby: int y bottom right position
+    :return: the crop
     """
     image = pyautogui.screenshot()
+    # We change the image color
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     return image[tly:rby, tlx:rbx, :3]  # image[ymin:ymax,xmin:xmax]
 
-time.sleep(3)
-if __name__ == '__main__':
-    crop_address = extract_address()
+def image_to_text(crop):
+    """
+    transform a image with text into a string
+    :param crop : an image
+    :return: a string
+    """
+    text_from_crop = pytesseract.image_to_string(crop)
+    return text_from_crop
 
-    get_screenshot()
+if __name__ == '__main__':
+    #print(pyautogui.size())
+    # crop_address = extract_zillow_address()
+    crop_address = get_screenshot()
+    print(type(crop_address))
+
+    # Plot the crop
     plt.imshow(crop_address)
-    # plt.imshow(image)
+    plt.title("the address as image")
     plt.show()
+
+    text_from_crop = image_to_text(crop_address)
+    print("outupt:" + text_from_crop)
